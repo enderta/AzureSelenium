@@ -1,0 +1,35 @@
+trigger:
+  - main
+
+pool:
+  name: loupeAgent
+
+jobs:
+  - job: RunSeleniumTests
+    displayName: 'Run Selenium Tests'
+    steps:
+      - task: UseJava@1
+        inputs:
+          versionSpec: '17'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: 'PreInstalled'
+          jdkFile: ''
+          jdkDestinationDirectory: ''
+
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          goals: 'clean test'
+          options: '-DskipTests=false'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          testRunTitle: 'Selenium Tests'
