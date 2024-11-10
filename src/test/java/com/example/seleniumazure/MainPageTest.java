@@ -31,6 +31,7 @@ public class MainPageTest {
             driver.get("https://www.jetbrains.com/");
             driver.findElement(By.xpath("//button[@data-jetbrains-cookies-banner-action='ACCEPT_ALL']")).click();
             mainPage = new MainPage(driver);
+
         }
 
 
