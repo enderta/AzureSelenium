@@ -8,14 +8,7 @@ jobs:
   - job: RunSeleniumTests
     displayName: 'Run Selenium Tests'
     steps:
-      - task: JavaToolInstaller@0
-        inputs:
-          versionSpec: '11'
-          jdkArchitectureOption: 'x64'
-          jdkSourceOption: 'PreInstalled'
-          jdkFile: ''
-          jdkDestinationDirectory: ''
-
+    
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
