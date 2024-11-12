@@ -1,18 +1,17 @@
 trigger:
   - main
 
-
-
 jobs:
-  - job: RunSeleniumTests
-    displayName: 'Run Selenium Tests'
+  - job: RunSeleniumTests1
+    displayName: 'Run Selenium Tests - Part 1'
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
-    
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
           goals: 'clean test'
-          options: '-DskipTests=false'
+          options: '-DskipTests=false -Dtest=TestClass1,TestClass2' # Specify test classes for this job
           publishJUnitResults: true
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
           javaHomeOption: 'JDKVersion'
@@ -24,4 +23,27 @@ jobs:
       - task: PublishTestResults@2
         inputs:
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          testRunTitle: 'Selenium Tests'
+          testRunTitle: 'Selenium Tests - Part 1'
+
+  - job: RunSeleniumTests2
+    displayName: 'Run Selenium Tests - Part 2'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          goals: 'clean test'
+          options: '-DskipTests=false -Dtest=TestClass3,TestClass4' # Specify test classes for this job
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          testRunTitle: 'Selenium Tests - Part 2'
